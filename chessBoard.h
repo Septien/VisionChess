@@ -9,7 +9,12 @@ using namespace cv;
 using namespace std;
 
 /**
-** Class for storing the position of the board and the squares.
+** Class for storing the position of the board and its squares.
+** contours -> contours of all the squares of the board.
+** mc -> center of mass of all squares.
+** boardCenter -> Center of the board
+** squareWidth -> Avarage width of the squares of the board.
+** squareHeight -> Avarage height of the squares of the board.
 */
 class chessBoard
 {
