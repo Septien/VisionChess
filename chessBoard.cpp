@@ -3,7 +3,7 @@
 chessBoard::chessBoard()
 {
     // Previously found
-    squareWidth = 30;
+    squareWidth = 35;
     squareHeight = 35;
 }
 
@@ -12,7 +12,7 @@ chessBoard::~chessBoard()
 
 }
 
-void chessBoard::getContours(Mat &edges)
+void chessBoard::getContours(Mat &edges, vector<vector <Point> > &contours)
 {
     // Find all contours within the image
     vector<vector <Point> > allContours;
@@ -49,7 +49,7 @@ void chessBoard::getContours(Mat &edges)
     boardCenter = Point2f( boundingR.x + (boundingR.width/2), boundingR.y + (boundingR.height/2) );
 }
 
-void chessBoard::getCenterOfMass()
+void chessBoard::getCenterOfMass(vector<vector <Point> > &contours)
 {
     size_t i;
     // Points for the approximation polygon.
@@ -98,9 +98,10 @@ void chessBoard::loadBoardFromImage(char *filename)
     Mat structElement = getStructuringElement(MORPH_RECT, Size(8, 9));
     dilate(edges, edges, structElement);
 
-    getContours(edges);
+    vector<vector <Point> > contours;
+    getContours(edges, contours);
 
-    getCenterOfMass();
+    getCenterOfMass(contours);
 }
 
 void chessBoard::setGameBoard(Mat &chess)
@@ -118,7 +119,7 @@ void chessBoard::setGameBoard(Mat &chess)
     vector<Vec4i> heriarchy;
     findContours(edges, allContours, heriarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_TC89_KCOS, Point(0, 0));
 
-    int i;
+    size_t i;
 
     int minBoardArea = 50000;
     vector<Point> centerC;

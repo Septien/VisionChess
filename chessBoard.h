@@ -20,7 +20,6 @@ using namespace std;
 class chessBoard
 {
 private:
-    vector<vector <Point> > contours;
     vector<Point2i> mc;
     Point2f boardCenter;
     int squareWidth;
@@ -31,14 +30,14 @@ private:
     ** Stores only the contours of the objects with an area grater than 400 an less than 50000.
     ** edges -> Image of edges.
     */
-    void getContours(Mat &);
+    void getContours(Mat &, vector<vector <Point> > &);
 
     /**
     ** Gets the center of mass of all the squares. It gets the center of mass by first getting
     ** a polygon approximation of the squars, then getting the bounding rectangle, and then, using
     ** the top-left coordinates and width and height of the rectangle, the center is calculated.
     */
-    void getCenterOfMass();
+    void getCenterOfMass(vector<vector <Point> > &);
 
 public:
     chessBoard();
