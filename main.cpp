@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include "kinect.h"
 #include "chessBoard.h"
+#include "chessPiece.h"
 
 using namespace cv;
 using namespace std;
