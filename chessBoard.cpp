@@ -1,11 +1,5 @@
 #include "chessBoard.h"
 
-/**
-** Helper functions.
-*/
-bool pointCompareY(Point, Point);
-bool pointCompareX(Point, Point);
-
 chessBoard::chessBoard()
 {
     // Previously found
@@ -18,11 +12,6 @@ chessBoard::~chessBoard()
 
 }
 
-/**
-** Get the contours of the objects in the 'edges' image.
-** Stores only the contours of the objects with an area grater than 400 an less than 50000.
-** edges -> Image of edges.
-*/
 void chessBoard::getContours(Mat &edges)
 {
     // Find all contours within the image
@@ -33,7 +22,7 @@ void chessBoard::getContours(Mat &edges)
     size_t i;
 
     // Maximum area of squares
-    int maxArea = 400;
+    int minArea = 400;
     int boardArea = 50000;
     vector<Point> center;
     // Get the contours of only an area greater than 400 pixels2.
@@ -41,7 +30,7 @@ void chessBoard::getContours(Mat &edges)
     for (i = 0; i < allContours.size(); i++)
     {
         // Get the contours with area greater than 400
-        if (contourArea(allContours[i]) > maxArea)
+        if (contourArea(allContours[i]) > minArea)
         {
             // Get the center of mass of the board
             if (contourArea(allContours[i]) > boardArea)
@@ -60,11 +49,6 @@ void chessBoard::getContours(Mat &edges)
     boardCenter = Point2f( boundingR.x + (boundingR.width/2), boundingR.y + (boundingR.height/2) );
 }
 
-/**
-** Gets the center of mass of all the squares. It gets the center of mass by first getting
-** a polygon approximation of the squars, then getting the bounding rectangle, and then, using
-** the top-left coordinates and width and height of the rectangle, the center is calculated.
-*/
 void chessBoard::getCenterOfMass()
 {
     size_t i;
@@ -94,12 +78,6 @@ void chessBoard::getCenterOfMass()
     stable_sort(mc.begin(), mc.end(), pointCompareY);
 }
 
-/**
-** It recieves an image of the chess board with no pieces in it.
-** Calculates the center of mass of the board.
-** Finds all the squares within the board and calculates their center of mass.
-** filename -> path to the image (relative to the project or absolute).
-*/
 void chessBoard::loadBoardFromImage(char *filename)
 {
     Mat board = imread(filename, IMREAD_GRAYSCALE);
@@ -125,13 +103,6 @@ void chessBoard::loadBoardFromImage(char *filename)
     getCenterOfMass();
 }
 
-/**
-** Recieve an image with the of to be used.
-** Calculates the center of mass of the new board and calculate the
-** displacement with respect of the current board.
-** Update coordinates so both boards are concurrent.
-** chess -> grayscale image with the current board.
-*/
 void chessBoard::setGameBoard(Mat &chess)
 {
     Mat edges;
@@ -178,14 +149,4 @@ void chessBoard::setGameBoard(Mat &chess)
 Point2i chessBoard::getIthMC(int i)
 {
     return mc.at(i);
-}
-
-bool pointCompareX(Point a, Point b)
-{
-    return (a.x < b.x);
-}
-
-bool pointCompareY(Point a, Point b)
-{
-    return a.y < b.y;
 }
